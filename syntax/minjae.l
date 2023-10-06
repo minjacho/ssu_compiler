@@ -5,17 +5,12 @@ line [\n]
 ws {delim}+
 %{
 #include "y.tab.h"
-#include "type.h"
-extern int yylval;
-extern int line_no;
-extern A_ID *current_id;
-char    *makeString();
-int     checkIdentifier();
+int     checkIdentifier(char *s);
 %}
 
 %%
 {ws} {}
-{line} {line_no++;}
+{line} {}
 int { return(TYPE_IDENTIFIER);}
 float { return(TYPE_IDENTIFIER);}
 char { return(TYPE_IDENTIFIER);}
@@ -68,44 +63,30 @@ while { return(WHILE_SYM); }
 "\+" { return(PLUS); }
 "\-" { return(MINUS); }
 "\=" { return(ASSIGN); }
-{digit}+ { yylval=atoi(yytext); return(INTEGER_CONSTANT);}
-{digit}+\.{digit}+ { yylval=makeString(yytext); return(FLOAT_CONSTANT);}
+{digit}+ {return(INTEGER_CONSTANT);}
+{digit}+\.{digit}+ { return(FLOAT_CONSTANT);}
 {letter}({letter}|{digit})* { return(checkIdentifier(yytext));}
-\"([^"\n]|\\["\n])*\" { yylval=makeString(yytext); return(STRING_LITERAL);}
-\'([^'\n]|\'\')\' { yylval=*(yytext+1); return(CHARACTER_CONSTANT);}
-"//"[^\n]* {}
+\"([^"\n]|\\["\n])*\" {return(STRING_LITERAL);}
+\'([^'\n]|\'\')\' {return(CHARACTER_CONSTANT);}
 %%
-char *makeString(char *s)
+
+int ssu_strcmp(char *s1, char *s2)
 {
-    char *t;
-    t=malloc(strlen(s) + 1);
-    strcpy(t,s);
-    return(t);
+    int i = 0;
+
+    while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
+        i++;
+    return (s1[i] - s2[i]);
 }
+
 int checkIdentifier(char *s)
 {
-    A_ID *id;
-    char *t;
-    id=current_id;
-    while (id)
+    char *table[]={"int", "float", "char", "void"};
+
+    for (int i = 0; i < 4; i++)
     {
-        if(strcmp(id->name,s)==0)
-            break;
-        id = id->prev;
+        if (ssu_strcmp(table[i], s) == 0)
+            return (TYPE_IDENTIFIER);
     }
-    if (id == 0)
-    {
-        yylval=makeString(s);
-        return(IDENTIFIER);
-    }
-    else if (id->kind==ID_TYPE)
-    {
-        yylval = id->type;
-        return (TYPE_IDENTIFIER);
-    }
-    else
-    {
-        yylval=id->name;
-        return(IDENTIFIER);
-    }
+    return (IDENTIFIER);
 }

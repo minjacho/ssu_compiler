@@ -5,7 +5,7 @@
 		LP RP LB RB LR RR PERIOD COMMA EXCL STAR SLASH PERCENT ASSIGN
 		COLON AUTO_SYM STATIC_SYM TYPEDEF_SYM
 		STRUCT_SYM ENUM_SYM SIZEOF_SYM UNION_SYM
-		IF_SYM ELSE_SYM WHILE_SYM DO_SYM FOR_SYM CONTIUNE_SYM
+		IF_SYM ELSE_SYM WHILE_SYM DO_SYM FOR_SYM CONTINUE_SYM
 		BREAK_SYM RETURN_SYM SWITCH_SYM CASE_SYM DEFAULT_SYM
 %start program
 %%
@@ -160,7 +160,7 @@ expression_opt
 		| expression;
 jump_statement 
 		: RETURN_SYM expression_opt SEMICOLON
-		| CONTIUNE_SYM SEMICOLON
+		| CONTINUE_SYM SEMICOLON
 		| BREAK_SYM SEMICOLON;
 arg_expression_list_opt
 		: 
@@ -248,7 +248,7 @@ type_name
 		: declaration_specifiers abstract_declarator_opt;
 %%
 
-void main()
+int main()
 {
 	yyparse();
 }
