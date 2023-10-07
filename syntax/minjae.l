@@ -17,7 +17,7 @@ int checkIdentifier(char *s);
 int { return(TYPE_IDENTIFIER);}
 float { return(TYPE_IDENTIFIER);}
 char { return(TYPE_IDENTIFIER);}
-void { return(TYPE_IDENTIFIER);} 
+void { return(TYPE_IDENTIFIER);}
 auto { return(AUTO_SYM); }
 break { return(BREAK_SYM); }
 case { return(CASE_SYM); }
@@ -32,7 +32,7 @@ return { return(RETURN_SYM); }
 sizeof { return(SIZEOF_SYM); }
 static { return(STATIC_SYM); }
 struct { return(STRUCT_SYM); }
-swtich { return(SWITCH_SYM); }
+switch { return(SWITCH_SYM); }
 typedef { return(TYPEDEF_SYM); }
 union { return(UNION_SYM); }
 while { return(WHILE_SYM); }

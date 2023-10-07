@@ -19,10 +19,10 @@ program
 		;
 translation_unit
 		: external_declaration
-		| translation_unit external_declaration 
+		| translation_unit external_declaration
 		;
 external_declaration
-		: function_definition 
+		: function_definition
 		| declaration
 		;
 function_definition
@@ -53,7 +53,7 @@ init_declarator
 		;
 type_specifier
 		: struct_specifier
-		| enum_specifier 
+		| enum_specifier
 		| TYPE_IDENTIFIER
 		;
 struct_specifier
@@ -106,7 +106,7 @@ direct_declarator
 		| direct_declarator LB constant_expression_opt RB
 		| direct_declarator LP parameter_type_list_opt RP
 		;
-constant_expression_opt 
+constant_expression_opt
 		: /* empty */
 		| constant_expression
 		;
@@ -149,9 +149,9 @@ initializer_list
 		;
 statement
 		: labeled_statement
+		| selection_statement
 		| compound_statement
 		| expression_statement
-		| selection_statement
 		| iteration_statement
 		| jump_statement
 		;
@@ -171,18 +171,17 @@ statement_list
 		| statement_list statement
 		;
 expression_statement
-		: SEMICOLON 
+		: SEMICOLON
 		| expression SEMICOLON
 		;
 selection_statement
-		: IF_SYM LP expression RP else_opt_statement
+		: IF_SYM LP expression RP statement else_opt_statment
 		| SWITCH_SYM LP expression RP statement
 		;
-else_opt_statement
-		: statement
+else_opt_statment
+		: /* empty */
 		| ELSE_SYM statement
 		;
-
 iteration_statement
 		: WHILE_SYM LP expression RP statement
 		| DO_SYM statement WHILE_SYM LP expression RP SEMICOLON
@@ -191,11 +190,11 @@ iteration_statement
 for_expression
 		: expression_opt SEMICOLON expression_opt SEMICOLON expression_opt
 		;
-expression_opt 
-		: 
+expression_opt
+		:
 		| expression
 		;
-jump_statement 
+jump_statement
 		: RETURN_SYM expression_opt SEMICOLON
 		| CONTINUE_SYM SEMICOLON
 		| BREAK_SYM SEMICOLON
@@ -218,7 +217,7 @@ logical_and_expression
 		: equality_expression
 		| logical_and_expression AMPAMP equality_expression
 		;
-equality_expression 
+equality_expression
 		: relational_expression
 		| equality_expression EQL relational_expression
 		| equality_expression NEQ relational_expression
@@ -275,7 +274,7 @@ primary_expression
 		| LP expression RP
 		;
 arg_expression_list_opt
-		: 
+		:
 		| arg_expression_list
 		;
 arg_expression_list
