@@ -3,9 +3,12 @@ letter [a-zA-Z_]
 delim [ \t]
 line [\n]
 ws {delim}+
+
 %{
 #include "y.tab.h"
-int     checkIdentifier(char *s);
+#include "string.h"
+int ssu_strcmp(char *s1, char *s2);
+int checkIdentifier(char *s);
 %}
 
 %%
@@ -33,9 +36,9 @@ swtich { return(SWITCH_SYM); }
 typedef { return(TYPEDEF_SYM); }
 union { return(UNION_SYM); }
 while { return(WHILE_SYM); }
-"\+\+" { return(PLUSPLUS); }
-"\-\-" { return(MINUSMINUS); }
-"\->" { return(ARROW); }
+"++" { return(PLUSPLUS); }
+"--" { return(MINUSMINUS); }
+"->" { return(ARROW); }
 "<" { return(LSS); }
 ">" { return(GTR); }
 "<=" { return(LEQ); }
@@ -45,48 +48,44 @@ while { return(WHILE_SYM); }
 "&&" { return(AMPAMP); }
 "||" { return(BARBAR); }
 "\.\.\." { return(DOTDOTDOT); }
-"\(" { return(LP); }
-"\)" { return(RP); }
-"\[" { return(LB); }
-"\]" { return(RB); }
-"\{" { return(LR); }
-"\}" { return(RR); }
-"\:" { return(COLON); }
-"\." { return(PERIOD); }
-"\," { return(COMMA); }
-"\!" { return(EXCL); }
-"\*" { return(STAR); }
-"\/" { return(SLASH); }
-"\%" { return(PERCENT); }
-"\&" { return(AMP); }
-"\;" { return(SEMICOLON); }
-"\+" { return(PLUS); }
-"\-" { return(MINUS); }
-"\=" { return(ASSIGN); }
+"(" { return(LP); }
+")" { return(RP); }
+"[" { return(LB); }
+"]" { return(RB); }
+"{" { return(LR); }
+"}" { return(RR); }
+":" { return(COLON); }
+"." { return(PERIOD); }
+"," { return(COMMA); }
+"!" { return(EXCL); }
+"*" { return(STAR); }
+"/" { return(SLASH); }
+"%" { return(PERCENT); }
+"&" { return(AMP); }
+";" { return(SEMICOLON); }
+"+" { return(PLUS); }
+"-" { return(MINUS); }
+"=" { return(ASSIGN); }
 {digit}+ {return(INTEGER_CONSTANT);}
 {digit}+\.{digit}+ { return(FLOAT_CONSTANT);}
 {letter}({letter}|{digit})* { return(checkIdentifier(yytext));}
 \"([^"\n]|\\["\n])*\" {return(STRING_LITERAL);}
 \'([^'\n]|\'\')\' {return(CHARACTER_CONSTANT);}
+
 %%
-
-int ssu_strcmp(char *s1, char *s2)
-{
-    int i = 0;
-
-    while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
-        i++;
-    return (s1[i] - s2[i]);
-}
-
 int checkIdentifier(char *s)
 {
     char *table[]={"int", "float", "char", "void"};
 
     for (int i = 0; i < 4; i++)
     {
-        if (ssu_strcmp(table[i], s) == 0)
+        if (strcmp(table[i], s) == 0)
             return (TYPE_IDENTIFIER);
     }
     return (IDENTIFIER);
+}
+
+int yywrap()
+{
+    return (1);
 }

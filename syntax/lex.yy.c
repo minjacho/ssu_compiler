@@ -547,10 +547,12 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "minjae.l"
-#line 7 "minjae.l"
+#line 8 "minjae.l"
 #include "y.tab.h"
-int     checkIdentifier(char *s);
-#line 554 "lex.yy.c"
+#include "string.h"
+int ssu_strcmp(char *s1, char *s2);
+int checkIdentifier(char *s);
+#line 556 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -732,9 +734,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 11 "minjae.l"
+#line 14 "minjae.l"
 
-#line 738 "lex.yy.c"
+#line 740 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -819,307 +821,307 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "minjae.l"
+#line 15 "minjae.l"
 {}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 13 "minjae.l"
+#line 16 "minjae.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "minjae.l"
+#line 17 "minjae.l"
 { return(TYPE_IDENTIFIER);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "minjae.l"
+#line 18 "minjae.l"
 { return(TYPE_IDENTIFIER);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "minjae.l"
+#line 19 "minjae.l"
 { return(TYPE_IDENTIFIER);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "minjae.l"
+#line 20 "minjae.l"
 { return(TYPE_IDENTIFIER);} 
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "minjae.l"
+#line 21 "minjae.l"
 { return(AUTO_SYM); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "minjae.l"
+#line 22 "minjae.l"
 { return(BREAK_SYM); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 20 "minjae.l"
+#line 23 "minjae.l"
 { return(CASE_SYM); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "minjae.l"
+#line 24 "minjae.l"
 { return(CONTINUE_SYM); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "minjae.l"
+#line 25 "minjae.l"
 { return(DEFAULT_SYM); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "minjae.l"
+#line 26 "minjae.l"
 { return(DO_SYM); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "minjae.l"
+#line 27 "minjae.l"
 { return(ELSE_SYM); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "minjae.l"
+#line 28 "minjae.l"
 { return(ENUM_SYM); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "minjae.l"
+#line 29 "minjae.l"
 { return(FOR_SYM); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "minjae.l"
+#line 30 "minjae.l"
 { return(IF_SYM); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 28 "minjae.l"
+#line 31 "minjae.l"
 { return(RETURN_SYM); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 29 "minjae.l"
+#line 32 "minjae.l"
 { return(SIZEOF_SYM); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 30 "minjae.l"
+#line 33 "minjae.l"
 { return(STATIC_SYM); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 31 "minjae.l"
+#line 34 "minjae.l"
 { return(STRUCT_SYM); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 32 "minjae.l"
+#line 35 "minjae.l"
 { return(SWITCH_SYM); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 33 "minjae.l"
+#line 36 "minjae.l"
 { return(TYPEDEF_SYM); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 34 "minjae.l"
+#line 37 "minjae.l"
 { return(UNION_SYM); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 35 "minjae.l"
+#line 38 "minjae.l"
 { return(WHILE_SYM); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 36 "minjae.l"
+#line 39 "minjae.l"
 { return(PLUSPLUS); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 37 "minjae.l"
+#line 40 "minjae.l"
 { return(MINUSMINUS); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 38 "minjae.l"
+#line 41 "minjae.l"
 { return(ARROW); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 39 "minjae.l"
+#line 42 "minjae.l"
 { return(LSS); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 40 "minjae.l"
+#line 43 "minjae.l"
 { return(GTR); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 41 "minjae.l"
+#line 44 "minjae.l"
 { return(LEQ); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 42 "minjae.l"
+#line 45 "minjae.l"
 { return(GEQ); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 43 "minjae.l"
+#line 46 "minjae.l"
 { return(EQL); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 44 "minjae.l"
+#line 47 "minjae.l"
 { return(NEQ); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 45 "minjae.l"
+#line 48 "minjae.l"
 { return(AMPAMP); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 46 "minjae.l"
+#line 49 "minjae.l"
 { return(BARBAR); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 47 "minjae.l"
+#line 50 "minjae.l"
 { return(DOTDOTDOT); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 48 "minjae.l"
+#line 51 "minjae.l"
 { return(LP); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 49 "minjae.l"
+#line 52 "minjae.l"
 { return(RP); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 50 "minjae.l"
+#line 53 "minjae.l"
 { return(LB); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 51 "minjae.l"
+#line 54 "minjae.l"
 { return(RB); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 52 "minjae.l"
+#line 55 "minjae.l"
 { return(LR); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 53 "minjae.l"
+#line 56 "minjae.l"
 { return(RR); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 54 "minjae.l"
+#line 57 "minjae.l"
 { return(COLON); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 55 "minjae.l"
+#line 58 "minjae.l"
 { return(PERIOD); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 56 "minjae.l"
+#line 59 "minjae.l"
 { return(COMMA); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 57 "minjae.l"
+#line 60 "minjae.l"
 { return(EXCL); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 58 "minjae.l"
+#line 61 "minjae.l"
 { return(STAR); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 59 "minjae.l"
+#line 62 "minjae.l"
 { return(SLASH); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 60 "minjae.l"
+#line 63 "minjae.l"
 { return(PERCENT); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 61 "minjae.l"
+#line 64 "minjae.l"
 { return(AMP); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 62 "minjae.l"
+#line 65 "minjae.l"
 { return(SEMICOLON); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 63 "minjae.l"
+#line 66 "minjae.l"
 { return(PLUS); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 64 "minjae.l"
+#line 67 "minjae.l"
 { return(MINUS); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 65 "minjae.l"
+#line 68 "minjae.l"
 { return(ASSIGN); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 66 "minjae.l"
+#line 69 "minjae.l"
 {return(INTEGER_CONSTANT);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 67 "minjae.l"
+#line 70 "minjae.l"
 { return(FLOAT_CONSTANT);}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 68 "minjae.l"
+#line 71 "minjae.l"
 { return(checkIdentifier(yytext));}
 	YY_BREAK
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 69 "minjae.l"
+#line 72 "minjae.l"
 {return(STRING_LITERAL);}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 70 "minjae.l"
+#line 73 "minjae.l"
 {return(CHARACTER_CONSTANT);}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 71 "minjae.l"
+#line 75 "minjae.l"
 ECHO;
 	YY_BREAK
-#line 1123 "lex.yy.c"
+#line 1125 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2116,18 +2118,8 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 71 "minjae.l"
+#line 75 "minjae.l"
 
-
-
-int ssu_strcmp(char *s1, char *s2)
-{
-    int i = 0;
-
-    while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
-        i++;
-    return (s1[i] - s2[i]);
-}
 
 int checkIdentifier(char *s)
 {
@@ -2135,8 +2127,13 @@ int checkIdentifier(char *s)
 
     for (int i = 0; i < 4; i++)
     {
-        if (ssu_strcmp(table[i], s) == 0)
+        if (strcmp(table[i], s) == 0)
             return (TYPE_IDENTIFIER);
     }
     return (IDENTIFIER);
+}
+
+int yywrap()
+{
+    return (1);
 }
