@@ -1,10 +1,31 @@
-all : y.tab.c lex.yy.c
-	cc y.tab.c lex.yy.c
-y.tab.c : minjae.y
-	yacc -d minjae.y
-lex.yy.c : minjae.l
-	lex minjae.l
-re : minjae.y minjae.l
-	yacc -d minjae.y
-	lex minjae.l
-	cc y.tab.c lex.yy.c
+NAME = minjae_syntax.out
+LEX_SRC = minjae_syntax.l
+YACC_SRC = minjae_syntax.y
+SRCS = ssu_syntax.c y.tab.c lex.yy.c main.c print.c
+OBJS = $(SRCS:.c=.o)
+CC = gcc -w -m32
+YACC = yacc -d
+LEX = lex
+
+all : $(NAME)
+
+$(NAME) : $(OBJS)
+	$(CC) $^ -o $(NAME)
+
+%.o : %.c
+	$(CC) -c $<
+
+y.tab.c : $(YACC_SRC)
+	$(YACC) $^
+
+lex.yy.c : $(LEX_SRC)
+	$(LEX) $^
+
+clean :
+	rm -f $(OBJS) y.tab.c lex.yy.c y.tab.h
+
+fclean : clean
+	rm -f $(NAME)
+
+re : fclean
+	make all

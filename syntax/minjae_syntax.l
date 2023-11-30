@@ -5,10 +5,10 @@ line [\n]
 ws {delim}+
 
 %{
-#include "y.tab.h"
-#include "string.h"
-int ssu_strcmp(char *s1, char *s2);
-int checkIdentifier(char *s);
+    # include "y.tab.h"
+    #include "ssu_syntax.h"
+    int checkIdentifier(char *s);
+    char *makeString(char *s);
 %}
 
 %%
@@ -66,26 +66,51 @@ while { return(WHILE_SYM); }
 "+" { return(PLUS); }
 "-" { return(MINUS); }
 "=" { return(ASSIGN); }
-{digit}+ {return(INTEGER_CONSTANT);}
-{digit}+\.{digit}+ { return(FLOAT_CONSTANT);}
-{letter}({letter}|{digit})* { return(checkIdentifier(yytext));}
-\"([^"\n]|\\["\n])*\" {return(STRING_LITERAL);}
-\'([^'\n]|\'\')\' {return(CHARACTER_CONSTANT);}
+{digit}+ {yylval=(long long)atoi(yytext); return(INTEGER_CONSTANT);}
+{digit}+\.{digit}+ {yylval=(long long)atof(yytext); return(FLOAT_CONSTANT);}
+{letter}({letter}|{digit})* {return(checkIdentifier(yytext));}
+\"([^"\n]|\\["\n])*\" {yylval=makeString(yytext); return(STRING_LITERAL);}
+\'([^'\n]|\'\')\' {yylval = *(yytext+1); return(CHARACTER_CONSTANT);}
+"//"[^\n]* { }
 
 %%
+
+char *makeString(char *s)
+{
+    char    *t;
+    t = malloc(strlen(s) + 1);
+    strcpy(t, s);
+    return (t);
+}
 int checkIdentifier(char *s)
 {
-    char *table[]={"int", "float", "char", "void"};
-
-    for (int i = 0; i < 4; i++)
+    A_ID *id;
+    char *t;
+    id = current_id;
+    while (id)
     {
-        if (strcmp(table[i], s) == 0)
-            return (TYPE_IDENTIFIER);
+        if (strcmp(id->name, s) == 0)
+            break;
+        id = id->prev;
     }
-    return (IDENTIFIER);
+    if (id == 0)
+    {
+        yylval = makeString(s);
+        return (IDENTIFIER);
+    }
+    else if (id->kind == ID_TYPE)
+    {
+        yylval = id->type;
+        return (TYPE_IDENTIFIER);
+    }
+    else
+    {
+        yylval = id->name;
+        return (IDENTIFIER);
+    }
 }
 
-int yywrap()
+int yywrap(void)
 {
-    return (1);
+    return 1;
 }
