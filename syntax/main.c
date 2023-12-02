@@ -18,3 +18,12 @@ int main() {
 	print_ast(root); // print syntax tree and tables
 	exit(0);
 }
+/*
+	initialize();
+	yyparse();
+	if (syntax_err) exit(1);
+	print_ast(root);
+	semantic_analysis(root);
+	if (semantic_err) exit(1);
+	print_sem_ast(root);
+*/
