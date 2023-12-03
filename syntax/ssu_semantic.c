@@ -1,5 +1,12 @@
 #include "ssu_semantic.h"
 
+int global_address=12;
+int semantic_err=0;
+#define LIT_MAX 100
+A_LITERAL literal_table[LIT_MAX];
+int literal_no=0;
+int literal_size=0;
+
 void semantic_analysis(A_NODE *node)
 {
 	sem_program(node);
@@ -928,7 +935,7 @@ BOOLEAN isPointerType(A_TYPE *t) {
 	else
 		return(FALSE);
 }
-static BOOLEAN isPointerOrArrayType(A_TYPE *t) {
+BOOLEAN isPointerOrArrayType_(A_TYPE *t) {
 	if (t && ( t->kind==T_POINTER || t->kind == T_ARRAY))
 		return(TRUE);
 	else

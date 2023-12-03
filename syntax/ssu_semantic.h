@@ -39,7 +39,7 @@ BOOLEAN		isStructOrUnionType(A_TYPE *);
 BOOLEAN		isFunctionType(A_TYPE *);
 BOOLEAN		isScalarType(A_TYPE *);
 BOOLEAN		isPointerType(A_TYPE *);
-BOOLEAN		isPointerOrArrayType(A_TYPE *);
+BOOLEAN		isPointerOrArrayType_(A_TYPE *);
 // 다름  BOOLEAN		isPointerOrArrayType_sem(A_TYPE *);
 BOOLEAN		isArrayType(A_TYPE *);
 BOOLEAN		isStringType(A_TYPE *);
@@ -54,12 +54,6 @@ void		semantic_error();
 A_NODE		*makeNode(NODE_NAME, A_NODE *, A_NODE *, A_NODE*);
 extern A_TYPE *int_type, *float_type, *char_type, *string_type, *void_type;
 
-int global_address=12;
-int semantic_err=0;
-#define LIT_MAX 100
-A_LITERAL literal_table[LIT_MAX];
-int literal_no=0;
-int literal_size=0;
 
 void print_sem_ast(A_NODE *);
 

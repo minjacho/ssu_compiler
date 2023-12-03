@@ -18,7 +18,7 @@ int main() {
 		exit(1);
 	print_ast(root); // print syntax tree and tables
 	semantic_analysis(root);
-	if (semantic_err)
+	if (semantic_error)
 		exit(1);
 	print_sem_ast(root);
 
