@@ -1,7 +1,7 @@
 NAME = minjae_syntax.out
 LEX_SRC = minjae_syntax.l
 YACC_SRC = minjae_syntax.y
-SRCS = ssu_syntax.c y.tab.c lex.yy.c main.c print.c
+SRCS = ssu_syntax.c ssu_semantic.c y.tab.c lex.yy.c main.c print.c print_sem.c
 OBJS = $(SRCS:.c=.o)
 CC = gcc -w -m32
 YACC = yacc -d

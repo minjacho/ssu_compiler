@@ -1,4 +1,5 @@
 #include "ssu_syntax.h"
+#include "ssu_semantic.h"
 #include "type.h"
 #include "y.tab.h"
 
@@ -16,6 +17,11 @@ int main() {
 	if (syntax_err)
 		exit(1);
 	print_ast(root); // print syntax tree and tables
+	semantic_analysis(root);
+	if (semantic_err)
+		exit(1);
+	print_sem_ast(root);
+
 	exit(0);
 }
 /*
