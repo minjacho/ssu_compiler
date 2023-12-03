@@ -928,7 +928,7 @@ BOOLEAN isPointerType(A_TYPE *t) {
 	else
 		return(FALSE);
 }
-BOOLEAN isPointerOrArrayType(A_TYPE *t) {
+static BOOLEAN isPointerOrArrayType(A_TYPE *t) {
 	if (t && ( t->kind==T_POINTER || t->kind == T_ARRAY))
 		return(TRUE);
 	else
