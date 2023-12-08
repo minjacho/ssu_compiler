@@ -53,7 +53,7 @@ int put_literal(A_LITERAL lit, int ll) {
 
 A_TYPE *sem_expression(A_NODE *node) {
 
-	A_TYPE *result=NIL, *t,*t1, *t2;
+	A_TYPE *result=NIL, *t, *t1, *t2;
 	A_ID *id;
 	A_LITERAL lit;
 	int i;
