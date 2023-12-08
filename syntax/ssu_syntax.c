@@ -472,7 +472,7 @@ void	initialize(void)
 {
 
 	// primitive data types
-	yylval = malloc(sizeof(LIT_VALUE));
+	// yylval = malloc(sizeof(LIT_VALUE));
 	int_type = setTypeAndKindOfDeclarator(makeType(T_ENUM), ID_TYPE, makeIdentifier("int"));
 	float_type = setTypeAndKindOfDeclarator(makeType(T_ENUM), ID_TYPE, makeIdentifier("float"));
 	char_type = setTypeAndKindOfDeclarator(makeType(T_ENUM), ID_TYPE, makeIdentifier("char"));

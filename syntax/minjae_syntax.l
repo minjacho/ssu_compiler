@@ -13,11 +13,7 @@ ws {delim}+
 
 %%
 {ws} {}
-{line} {}
-int { return(TYPE_IDENTIFIER);}
-float { return(TYPE_IDENTIFIER);}
-char { return(TYPE_IDENTIFIER);}
-void { return(TYPE_IDENTIFIER);}
+{line} {line_no++;}
 auto { return(AUTO_SYM); }
 break { return(BREAK_SYM); }
 case { return(CASE_SYM); }
@@ -66,10 +62,10 @@ while { return(WHILE_SYM); }
 "+" { return(PLUS); }
 "-" { return(MINUS); }
 "=" { return(ASSIGN); }
-{digit}+ {yylval=(long long)atoi(yytext); return(INTEGER_CONSTANT);}
-{digit}+\.{digit}+ {yylval=(long long)atof(yytext); return(FLOAT_CONSTANT);}
+{digit}+ {yylval=atoi(yytext); return(INTEGER_CONSTANT);}
+{digit}+\.{digit}+ {yylval=(unsigned long int)makeString(yytext); return(FLOAT_CONSTANT);}
 {letter}({letter}|{digit})* {return(checkIdentifier(yytext));}
-\"([^"\n]|\\["\n])*\" {yylval=makeString(yytext); return(STRING_LITERAL);}
+\"([^"\n]|\\["\n])*\" {yylval=(unsigned long int)makeString(yytext); return(STRING_LITERAL);}
 \'([^'\n]|\'\')\' {yylval = *(yytext+1); return(CHARACTER_CONSTANT);}
 "//"[^\n]* { }
 
@@ -85,7 +81,6 @@ char *makeString(char *s)
 int checkIdentifier(char *s)
 {
     A_ID *id;
-    char *t;
     id = current_id;
     while (id)
     {

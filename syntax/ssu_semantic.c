@@ -1,7 +1,6 @@
 #include "ssu_semantic.h"
 
 int global_address=12;
-int semantic_err=0;
 #define LIT_MAX 100
 A_LITERAL literal_table[LIT_MAX];
 int literal_no=0;
@@ -103,10 +102,7 @@ A_TYPE *sem_expression(A_NODE *node) {
 			t=convertUsualBinaryConversion(node);
 			t1=node->llink->type;
 			t2=node->rlink->type;
-			/* 다름
-			if (isPointerOrArrayType_sem(t1))
-				result=t1->element_type;*/
-			if (isPointerOrArrayType(t1))
+			if (isPointerOrArrayType_(t1))
 				result=t1->element_type;
 			else
 				semantic_error(32,node->line);
@@ -292,10 +288,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 				t=convertUsualBinaryConversion(node);
 			else if (!isCompatiblePointerType(t1,t2))
 				semantic_error(40, node->line);
-			// if (isArithmeticType(t1) && isArithmeticType(t2))
-			// 	result=convertUsualBinaryConversion(node);
-			// else if (!isCompatiblePointerType(t1,t2))
-			// 	semantic_error(40, node->line);
 			result = int_type;
 			break;
 		case N_EXP_NEQ :
@@ -308,12 +300,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 					(!isPointerType(t1) || isConstantZeroExp(node->rlink)) &&
 					(!isPointerType(t2) || isConstantZeroExp(node->rlink)))
 				semantic_error(40, node->line);
-			// if (isArithmeticType(t1) && isArithmeticType(t2))
-			// 	result=convertUsualBinaryConversion(node);
-			// else if (!isCompatiblePointerType(t1,t2) &&
-			// 		(!isPointerType(t1) || isConstantZeroExp(node->rlink)) &&
-			// 		(!isPointerType(t2) || isConstantZeroExp(node->rlink)))
-			// 	semantic_error(40, node->line);
 			result = int_type;
 			break;
 		case N_EXP_AND :
@@ -395,17 +381,6 @@ BOOLEAN isModifiableLvalue(A_NODE *node)
 	else
 		return TRUE;
 }
-/* 원본 파일에 voidtype이 if문에 없엇음
-BOOLEAN isModifiableLvalue(A_NODE *node)
-{
-	if (node->value==FALSE || isFunctionType(node->type))
-		return FALSE;
-	else
-		return TRUE;
-}
-*/
-
-// check statement and return local variable size
 int sem_statement(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw, BOOLEAN brk, BOOLEAN cnt)
 {
 	int local_size=0,i;
@@ -461,7 +436,7 @@ int sem_statement(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw, BOOLEAN brk, 
 			if (!isIntegralType(t))
 				semantic_error(50,node->line);
 			local_size=sem_statement(node->rlink,addr,ret,TRUE,TRUE,cnt);
-			break; // 원본 파일에 없엇음
+			break;
 		case N_STMT_WHILE:
 			t=sem_expression(node->llink);
 			if (isScalarType(t))
@@ -529,7 +504,6 @@ void sem_for_expression(A_NODE *node) {
 	}
 }
 
-// check statement-list and return local variable size
 int sem_statement_list(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw, BOOLEAN brk, BOOLEAN cnt)
 {
 	int size,i;
@@ -550,7 +524,7 @@ int sem_statement_list(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw, BOOLEAN 
 	node->value=size;
 	return(size);
 }
-// check type and return its size (size of incomplete type is 0)
+
 int sem_A_TYPE(A_TYPE *t)
 {
 	A_ID *id;
@@ -941,14 +915,7 @@ BOOLEAN isPointerOrArrayType_(A_TYPE *t) {
 	else
 		return(FALSE);
 }
-/*
-BOOLEAN isPointerOrArrayType_sem(A_TYPE *t) {
-	if (t && ( t->kind==T_POINTER || t->kind == T_ARRAY))
-		return(TRUE);
-	else
-		return(FALSE);
-}
-*/
+
 BOOLEAN isIntType(A_TYPE *t) {
 	if (t && t==int_type)
 		return(TRUE);
@@ -973,7 +940,7 @@ BOOLEAN isStringType(A_TYPE *t) {
 	else
 		return(FALSE);
 }
-// convert literal type
+
 A_LITERAL checkTypeAndConvertLiteral(A_LITERAL result,A_TYPE *t, int ll) {
 	if (result.type==int_type && t==int_type ||
 			result.type==char_type && t==char_type ||
@@ -998,6 +965,7 @@ A_LITERAL checkTypeAndConvertLiteral(A_LITERAL result,A_TYPE *t, int ll) {
 		semantic_error(41,ll);
 	return (result);
 }
+
 A_LITERAL getTypeAndValueOfExpression(A_NODE *node) {
 	A_TYPE *t;
 	A_ID *id;

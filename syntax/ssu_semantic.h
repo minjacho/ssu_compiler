@@ -57,4 +57,6 @@ extern A_TYPE *int_type, *float_type, *char_type, *string_type, *void_type;
 
 void print_sem_ast(A_NODE *);
 
+extern int semantic_err;
+
 #endif

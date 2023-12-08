@@ -53,7 +53,8 @@ A_TYPE		*setTypeStructOrEnumIdentifier(T_KIND, char *,ID_KIND);
 BOOLEAN		isNotSameFormalParameters(A_ID *, A_ID *);
 BOOLEAN		isNotSameType(A_TYPE *, A_TYPE *);
 BOOLEAN		isPointerOrArrayType(A_TYPE *);
-void		syntax_error(int, char *);
+// void		syntax_error(int, char *);
+void		syntax_error();
 void		initialize(void);
 
 void		print_ast(A_NODE *);
