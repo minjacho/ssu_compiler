@@ -20,9 +20,11 @@ void set_literal_address(A_NODE *node)
 	node->value+=literal_size;
 }
 
-void sem_program(A_NODE *node) {
+void sem_program(A_NODE *node)
+{
 	int i;
-	switch(node->name) {
+	switch(node->name)
+	{
 		case N_PROGRAM :
 			i = sem_declaration_list(node->clink,12);
 			node->value = global_address;
@@ -149,25 +151,21 @@ A_TYPE *sem_expression(A_NODE *node) {
 		case N_EXP_POST_INC :
 		case N_EXP_POST_DEC :
 			result=sem_expression(node->clink);
-			// usual binary conversion between the expression and 1 if (!isScalarType(result))
 			if(!isScalarType(result))
 				semantic_error(27,node->line);
-			// check if modifiable lvalue
 			if (!isModifiableLvalue(node->clink))
-				semantic_error(60,node->line);//
+				semantic_error(60,node->line);
 			break;
 		case N_EXP_CAST :
 			result=node->llink;
 			i=sem_A_TYPE(result);
 			t=sem_expression(node->rlink);
-			// check allowable casting conversion
 			if (!isAllowableCastingConversion(result,t))
 				semantic_error(58,node->line);
 			break;
 		case N_EXP_SIZE_TYPE :
 			t=node->clink;
 			i=sem_A_TYPE(t);
-			// check if incomplete array, function, void
 			if (isArrayType(t) && t->size==0 || isFunctionType(t) || isVoidType(t))
 				semantic_error(39,node->line);
 			else
@@ -176,7 +174,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 			break;
 		case N_EXP_SIZE_EXP :
 			t=sem_expression(node->clink);
-			// check if incomplete array, function (for non parameter
 			if ((node->clink->name!=N_EXP_IDENT || \
 						((A_ID*)node->clink->clink)->kind!=ID_PARM) && \
 					(isArrayType(t) && t->size==0 || isFunctionType(t)))
@@ -200,7 +197,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 			if (isScalarType(t)) {
 				node->clink=convertUsualUnaryConversion(node->clink);
 				result = int_type;
-				// 다름 result=node->clink->type;
 			}
 			else
 				semantic_error(27,node->line);
@@ -219,7 +215,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 			node->clink=convertUsualUnaryConversion(node->clink);
 			if (isPointerType(t)) {
 				result=t->element_type;
-				// lvalue if points to an object
 				if (isStructOrUnionType(result) || isScalarType(result))
 					lvalue=TRUE;
 			}
@@ -229,10 +224,8 @@ A_TYPE *sem_expression(A_NODE *node) {
 		case N_EXP_PRE_INC :
 		case N_EXP_PRE_DEC :
 			result=sem_expression(node->clink);
-			// usual binary conversion between the expression and 1
 			if (!isScalarType(result))
 				semantic_error(27,node->line);
-			// check if modifiable lvalue
 			if (!isModifiableLvalue(node->clink))
 				semantic_error(60,node->line);
 			break;
@@ -335,7 +328,6 @@ A_TYPE *sem_expression(A_NODE *node) {
 	node->value = lvalue;
 	return (result);
 }
-// check argument-expression-list in function call expression
 void sem_arg_expr_list(A_NODE *node, A_ID *id)
 {
 	A_TYPE *t;
@@ -355,7 +347,7 @@ void sem_arg_expr_list(A_NODE *node, A_ID *id)
 						semantic_error(59,node->line);
 					sem_arg_expr_list(node->rlink,id->link);
 				}
-				else {	// DOTDOT parameter : no conversion
+				else {
 					t=sem_expression(node->llink);
 					sem_arg_expr_list(node->rlink,id);
 				}
@@ -363,7 +355,7 @@ void sem_arg_expr_list(A_NODE *node, A_ID *id)
 			}
 			break;
 		case N_ARG_LIST_NIL :
-			if (id && id->type) // check if '...' argument
+			if (id && id->type)
 				semantic_error(35,node->line);
 			break;
 		default :
@@ -388,7 +380,7 @@ int sem_statement(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw, BOOLEAN brk, 
 	A_TYPE *t;
 	switch(node->name) {
 		case N_STMT_LABEL_CASE :
-			if (sw==FALSE) // case statement is not in 'switch'
+			if (sw==FALSE)
 				semantic_error(71,node->line);
 			lit=getTypeAndValueOfExpression(node->llink);
 			if (isIntegralType(lit.type))
@@ -543,7 +535,7 @@ int sem_A_TYPE(A_TYPE *t)
 		case T_ENUM:
 			i=0;
 			id=t->field;
-			while (id) { // enumerators
+			while (id) {
 				if (id->init){
 					lit=getTypeAndValueOfExpression(id->init);
 					if (!isIntType(lit.type))
@@ -589,9 +581,9 @@ int sem_A_TYPE(A_TYPE *t)
 		case T_FUNC:
 			tt=t->element_type;
 			i=sem_A_TYPE(tt);
-			if (isArrayType(tt) || isFunctionType(tt)) // check return type
+			if (isArrayType(tt) || isFunctionType(tt))
 				semantic_error(85,t->line);
-			i=sem_declaration_list(t->field,12)+12; // parameter type & size
+			i=sem_declaration_list(t->field,12)+12;
 			if (t->expr) {
 				i=i+sem_statement(t->expr,i,t->element_type,FALSE,FALSE,FALSE);
 			}
@@ -611,7 +603,6 @@ int sem_A_TYPE(A_TYPE *t)
 	return(result);
 }
 
-// set variable address in declaration-list, and return its total variable size
 int sem_declaration_list(A_ID *id, int addr)
 {
 	int i=addr;
@@ -621,7 +612,6 @@ int sem_declaration_list(A_ID *id, int addr)
 	}
 	return(addr-i);
 }
-// check declaration (identifier), set address, and return its size
 int sem_declaration(A_ID *id,int addr)
 {
 	A_TYPE *t;
@@ -632,14 +622,13 @@ int sem_declaration(A_ID *id,int addr)
 		case ID_VAR:
 			i=sem_A_TYPE(id->type);
 
-			// check empty array
 			if (isArrayType(id->type) && id->type->expr==NIL)
 				semantic_error(86,id->line);
 			if (i%4)
 				i=i/4*4+4;
 			if (id->specifier==S_STATIC)
 				id->level=0;
-			if (id->level==0) // if global scope
+			if (id->level==0)
 			{
 				id->address=global_address;
 				global_address+=i;
@@ -665,7 +654,6 @@ int sem_declaration(A_ID *id,int addr)
 			if (id->type)
 			{
 				size=sem_A_TYPE(id->type);
-				// usual unary conversion of parm type
 				if (id->type==char_type)
 					id->type=int_type;
 				else if (isArrayType(id->type)){
@@ -718,7 +706,7 @@ A_ID *getPointerFieldIdentifier(A_TYPE *t, char *s) {
 			}
 		}
 	}
-	return (id); // 원본 파일에 없었음
+	return (id);
 }
 BOOLEAN isSameParameterType(A_ID *a, A_ID *b) {
 	while (a) {
@@ -834,7 +822,7 @@ A_NODE *convertCastingConversion(A_NODE *node,A_TYPE *t1) {
 	}
 	return (node);
 }
-BOOLEAN isAllowableAssignmentConversion(A_TYPE *t1, A_TYPE *t2, A_NODE *node) // t1 <--- t2
+BOOLEAN isAllowableAssignmentConversion(A_TYPE *t1, A_TYPE *t2, A_NODE *node)
 {
 	if (isArithmeticType(t1) && isArithmeticType(t2))
 		return (TRUE);
@@ -1138,17 +1126,152 @@ A_LITERAL getTypeAndValueOfExpression(A_NODE *node) {
 		default :
 			semantic_error(90,node->line);
 			break;
-	}// close switch statement
+	}
 	return (result);
 }
 
-/* 밑에 에러처리 다시 적어야됨  !!!*/
 void semantic_error(int i, int ll, char *s) {
 	semantic_err++;
+	printf("**** semantic error at line %d : ", ll);
+	switch(i)
+	{
+		case 13:
+			printf("arith type expr required in unary operation\n");
+			break;
+		case 18:
+			printf("illegal constant expression\n");
+			break;
+		case 19:
+			printf("illegal identifier %s in constant expression\n", s);
+			break;
+		case 21:
+			printf("illegal type in function call expression\n");
+			break;
+		case 24:
+			printf("incompatible type in additive expression\n");
+			break;
+		case 27:
+			printf("scalar type expr required in expression\n");
+			break;
+		case 28:
+			printf("arith type expression required in binary operation\n");
+			break;
+		case 29:
+			printf("integral type expression required in expression\n");
+			break;
+		case 31:
+			printf("pointer type expr required in pointer operation\n");
+			break;
+		case 32:
+			printf("array type required in array expression\n");
+			break;
+		case 34:
+			printf("too many arguments in function call\n");
+			break;
+		case 35:
+			printf("too few arguments in function call\n");
+			break;
+		case 37:
+			printf("illegal struct field identifier in struct reference expression\n");
+			break;
+		case 38:
+			printf("illegal kind of identifier %s in expression\n", s);
+			break;
+		case 39:
+			printf("illegal type size in sizeof operation\n");
+			break;
+		case 40:
+			printf("illegal expression type in relational operation\n");
+			break;
+		case 49:
+			printf("scalar type expr required in middle of for-expr\n");
+			break;
+		case 50:
+			printf("integral type expression required in statement\n");
+			break;
+		case 51:
+			printf("illegal expression type in case label\n");
+			break;
+		case 57:
+			printf("not permitted type conversion in return expression\n");
+			break;
+		case 58:
+			printf("not permitted type casting in expression\n");
+			break;
+		case 59:
+			printf("not permitted type conversion in argument\n");
+			break;
+		case 60:
+			printf("expression is not an lvalue\n");
+			break;
+		case 71:
+			printf("case label not within a switch statement\n");
+			break;
+		case 72:
+			printf("default label not within a switch statement\n");
+			break;
+		case 73:
+			printf("break statement not within loop or switch stmt\n");
+			break;
+		case 74:
+			printf("continue statement not within a loop\n");
+			break;
+		case 80:
+			printf("undefined type\n");
+			break;
+		case 81:
+			printf("integer type expression required in enumerator\n");
+			break;
+		case 82:
+			printf("illegal array size or type\n");
+			break;
+		case 83:
+			printf("illegal element type of array declarator\n");
+			break;
+		case 84:
+			printf("illegal type in struct or union field\n");
+			break;
+		case 85:
+			printf("invalid function return type\n");
+			break;
+		case 86:
+			printf("illegal array size or empty array\n");
+			break;
+		case 89:
+			printf("unknown identifier kind: %s\n", s);
+			break;
+		case 90:
+			printf("fatal compiler error in parse result\n");
+			break;
+		case 93:
+			printf("too many literals in source program\n");
+			break;
+		default:
+			printf("unknown\n");
+			break;
+	}
 	printf("ERROR num: %d, line: %d, identifier: %s\n",i, ll, s);
 }
 
 void semantic_warning(int i, int ll)
 {
-	printf("WARNING num: %d, line: %d\n",i, ll);
+	printf("---- warning at line %d:",ll);
+	switch(i)
+	{
+		case 11:
+			printf("incompatible types in assignment expression\n");
+			break ;
+		case 12:
+			printf("incompatible types in argument or return expr\n");
+			break ;
+		case 14:
+			printf("incompatible types in binary expression\n");
+			break;
+		case 16:
+			printf("integer type expression is required\n");
+			break;
+		default:
+			printf("unknown\n");
+			break;
+	}
 }
