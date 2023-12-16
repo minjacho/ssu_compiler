@@ -40,7 +40,6 @@ BOOLEAN		isFunctionType(A_TYPE *);
 BOOLEAN		isScalarType(A_TYPE *);
 BOOLEAN		isPointerType(A_TYPE *);
 BOOLEAN		isPointerOrArrayType_(A_TYPE *);
-// 다름  BOOLEAN		isPointerOrArrayType_sem(A_TYPE *);
 BOOLEAN		isArrayType(A_TYPE *);
 BOOLEAN		isStringType(A_TYPE *);
 BOOLEAN		isVoidType(A_TYPE *);
